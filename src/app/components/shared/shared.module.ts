@@ -3,6 +3,7 @@ import { CommonModule } from '@angular/common';
 
 //Modulos
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
+import { HttpClientModule } from '@angular/common/http';
 
 //Angular Material
 import { MatInputModule } from '@angular/material/input';
@@ -13,6 +14,7 @@ import {MatGridListModule} from '@angular/material/grid-list';
 import {MatSnackBarModule} from '@angular/material/snack-bar';
 import {MatProgressSpinnerModule} from '@angular/material/progress-spinner';
 import {MatToolbarModule} from '@angular/material/toolbar';
+import {MatTableModule} from '@angular/material/table';
 
 
 @NgModule({
@@ -28,7 +30,9 @@ import {MatToolbarModule} from '@angular/material/toolbar';
     ReactiveFormsModule,
     MatSnackBarModule,
     MatProgressSpinnerModule,
-    MatToolbarModule
+    MatToolbarModule,
+    HttpClientModule,
+    MatTableModule
   ],
   exports: [
     MatInputModule,
@@ -40,7 +44,9 @@ import {MatToolbarModule} from '@angular/material/toolbar';
     ReactiveFormsModule,
     MatSnackBarModule,
     MatProgressSpinnerModule,
-    MatToolbarModule
+    MatToolbarModule,
+    HttpClientModule,
+    MatTableModule
   ]
 })
 export class SharedModule { }
