@@ -1,8 +1,10 @@
-import { AfterViewInit, Component, ViewChild } from '@angular/core';
+import { AfterViewInit, Component, OnInit, ViewChild } from '@angular/core';
 import { MatPaginator } from '@angular/material/paginator';
+import { MatSnackBar } from '@angular/material/snack-bar';
 import { MatSort } from '@angular/material/sort';
 import { MatTableDataSource } from '@angular/material/table';
 import { Usuario } from 'src/app/interfaces/usuario';
+import { UsuarioService } from 'src/app/services/usuario.service';
 
 
 
@@ -13,21 +15,21 @@ import { Usuario } from 'src/app/interfaces/usuario';
   templateUrl: './usuarios.component.html',
   styleUrls: ['./usuarios.component.css']
 })
-export class UsuariosComponent implements AfterViewInit {
+export class UsuariosComponent implements AfterViewInit, OnInit {
 
-  listUsuarios: Usuario[] = [
-    {usuario: 'rpolar', nombre: 'admin', apellido: 'admin', sexo: 'Masculino'},
-    {usuario: 'jperes', nombre: 'Jose', apellido: 'Perez', sexo: 'Masculino'},
-    {usuario: 'aramirez', nombre: 'Ana', apellido: 'Ramirez', sexo: 'Femenino'},
-    {usuario: 'ewatson', nombre: 'Emma', apellido: 'Watson', sexo: 'Femenino'},
-  ];
+  listUsuarios: Usuario[] = [];
 
   displayedColumns: string[] = ['usuario', 'nombre', 'apellido', 'sexo','acciones'];
   //dataSource = listUsuarios;
-  dataSource = new MatTableDataSource(this.listUsuarios);
+  dataSource!: MatTableDataSource<any>;
 
   @ViewChild(MatPaginator) paginator!: MatPaginator;
   @ViewChild(MatSort) sort!: MatSort;
+
+  constructor(private _usuarioService: UsuarioService, private _snackBar: MatSnackBar){}
+  ngOnInit(): void {
+    this.cargarUsuarios();
+  }
 
   ngAfterViewInit() {
     this.dataSource.paginator = this.paginator;
@@ -39,5 +41,19 @@ export class UsuariosComponent implements AfterViewInit {
     this.dataSource.filter = filterValue.trim().toLowerCase();
   }
 
+  cargarUsuarios(){
+    this.listUsuarios = this._usuarioService.getUsuario();
+    this.dataSource = new MatTableDataSource(this.listUsuarios);
+  }
 
+  eliminarUsuario(index: number) {
+    this._usuarioService.eliminarUsuario(index);
+    this.cargarUsuarios();
+
+    this._snackBar.open('El usuario fue eliminado con exito','',{
+      duration: 2000,
+      horizontalPosition: 'center',
+      verticalPosition: 'bottom'
+    })
+  }
 }
